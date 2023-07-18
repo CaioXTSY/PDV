@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                padding: 100px;
+                background-color: #f0f0f0;
+            }
+
+            #tabs {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+            }
+
+            #tabs button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                font-size: 17px;
+                transition: background-color 0.3s ease;
+            }
+
+            #tabs button:hover {
+                background-color: #ddd;
+                transition: background-color 0.2s ease;
+            }
+
+            #tabs button.active {
+                background-color: #ccc;
+                transition: background-color 0.2s ease;
+            }
+
+            .tabcontent {
+                display: none;
+                padding: 6px 12px;
+                border: 1px solid #ccc;
+                border-top: none;
+                animation: slideIn 0.3s ease;
+            }
+
+            @keyframes slideIn {
+                0% {
+                    transform: translateY(-20px);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            .input-field {
+                margin-bottom: 10px;
+            }
+
+            #Vender button:active {
+                animation: pulse 0.2s ease;
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h1>PDV</h1>
+
+        <div id="tabs">
+            <button class="tablinks" onclick="openTab(event, 'Adicionar')">Adicionar produto</button>
+            <button class="tablinks" onclick="openTab(event, 'Remover')">Remover produto</button>
+            <button class="tablinks" onclick="openTab(event, 'Listar')">Listar produtos</button>
+            <button class="tablinks" onclick="openTab(event, 'Vender')">Iniciar venda</button>
+        </div>
+
+        <div id="Adicionar" class="tabcontent">
+            <h3>Adicionar produto</h3>
+            <div class="input-field">
+                <input id="nome" type="text" placeholder="Nome" />
+            </div>
+            <div class="input-field">
+                <input id="codigo" type="number" placeholder="Codigo" />
+            </div>
+            <div class="input-field">
+                <input id="preco" type="number" step="0.01" placeholder="Preco" />
+            </div>
+            <button onclick="adicionarProduto()">Adicionar</button>
+        </div>
+
+        <div id="Remover" class="tabcontent">
+            <h3>Remover produto</h3>
+            <div class="input-field">
+                <input id="removerCodigo" type="number" placeholder="Codigo" />
+            </div>
+            <button onclick="removerProduto()">Remover</button>
+        </div>
+
+        <div id="Listar" class="tabcontent">
+            <h3>Lista de produtos</h3>
+            <div id="produtos"></div>
+        </div>
+
+        <div id="Vender" class="tabcontent">
+            <h3>Iniciar venda</h3>
+            <div class="input-field">
+                <input id="vendaCodigo" type="number" placeholder="Codigo do produto" />
+            </div>
+            <div class="input-field">
+                <input id="quantidade" type="number" placeholder="Quantidade" />
+            </div>
+            <button onclick="iniciarVenda()">Adicionar ao carrinho</button>
+            <button onclick="finalizarVenda()">Finalizar venda</button>
+            <h4>Itens no carrinho</h4>
+            <div id="carrinho"></div>
+        </div>
+
+        <script>
+            function openTab(evt, tabName) {
+                var i, tabcontent, tablinks;
+
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+
+                document.getElementById(tabName).style.display = "block";
+                evt.currentTarget.className += " active";
+
+                if (tabName == 'Listar') {
+                    listarProdutos();
+                }
+                if (tabName == 'Vender') {
+                    mostrarCarrinho();
+                }
+            }
+
+            document.getElementById('Adicionar').style.display = 'block';
+
+            async function adicionarProduto() {
+                const nome = document.getElementById('nome').value;
+                const codigo = document.getElementById('codigo').value;
+                const preco = document.getElementById('preco').value;
+
+                const resultado = await pywebview.api.adicionar_produto(nome, codigo, preco);
+
+                if (resultado) {
+                    alert('Produto adicionado com sucesso!');
+                    listarProdutos();
+                } else {
+                    alert('Falha ao adicionar o produto.');
+                }
+
+                document.getElementById('nome').value = '';
+                document.getElementById('codigo').value = '';
+                document.getElementById('preco').value = '';
+            }
+
+            async function removerProduto() {
+                const codigo = document.getElementById('removerCodigo').value;
+
+                const resultado = await pywebview.api.remover_produto(codigo);
+
+                if (resultado) {
+                    alert('Produto removido com sucesso!');
+                    listarProdutos();
+                } else {
+                    alert('Falha ao remover o produto.');
+                }
+
+                document.getElementById('removerCodigo').value = '';
+            }
+
+            async function listarProdutos() {
+                const produtos = await pywebview.api.listar_produtos();
+
+                let html = '';
+                for (let produto of produtos) {
+                    html += `<p>${produto.nome} - ${produto.codigo} - ${produto.preco}</p>`;
+                }
+
+                document.getElementById('produtos').innerHTML = html;
+            }
+
+            async function iniciarVenda() {
+                const codigo = document.getElementById('vendaCodigo').value;
+                const quantidade = document.getElementById('quantidade').value;
+
+                const resultado = await pywebview.api.iniciar_venda(codigo, quantidade);
+
+                if (resultado) {
+                    alert('Produto adicionado ao carrinho!');
+                    mostrarCarrinho();
+                } else {
+                    alert('Falha ao adicionar produto ao carrinho.');
+                }
+
+                document.getElementById('vendaCodigo').value = '';
+                document.getElementById('quantidade').value = '';
+            }
+
+            async function finalizarVenda() {
+                const total = await pywebview.api.finalizar_venda();
+
+                alert(`Venda finalizada! Total: ${total}`);
+
+                document.getElementById('carrinho').innerHTML = '';
+            }
+
+            async function mostrarCarrinho() {
+                const carrinho = await pywebview.api.mostrar_carrinho();
+
+                let html = '';
+                for (let item of carrinho) {
+                    html += `<p>${item.produto.nome} - ${item.quantidade}</p>`;
+                }
+
+                document.getElementById('carrinho').innerHTML = html;
+            }
+        </script>
+    </body>
+</html>
