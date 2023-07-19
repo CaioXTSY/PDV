@@ -1,60 +1,59 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <link rel="stylesheet" href="styles.css">
-</head>
-
-<body>
-    <div id="tabs">
-        <button class="tablinks" onclick="openTab(event, 'Adicionar')">Adicionar produto</button>
-        <button class="tablinks" onclick="openTab(event, 'Remover')">Remover produto</button>
-        <button class="tablinks" onclick="openTab(event, 'Listar')">Listar produtos</button>
-        <button class="tablinks" onclick="openTab(event, 'Vender')">Iniciar venda</button>
-    </div>
-
-    <div id="Adicionar" class="tabcontent">
-        <h3>Adicionar produto</h3>
-        <div class="input-field">
-            <input id="nome" type="text" placeholder="Nome" />
+    <head>
+      <link rel="stylesheet" href="styles.css">
+  </head>
+    <body>
+        <div id="tabs">
+            <button class="tablinks" onclick="openTab(event, 'Adicionar')">Adicionar produto</button>
+            <button class="tablinks" onclick="openTab(event, 'Remover')">Remover produto</button>
+            <button class="tablinks" onclick="openTab(event, 'Listar')">Listar produtos</button>
+            <button class="tablinks" onclick="openTab(event, 'Vender')">Iniciar venda</button>
         </div>
-        <div class="input-field">
-            <input id="codigo" type="number" placeholder="Codigo" />
-        </div>
-        <div class="input-field">
-            <input id="preco" type="number" step="0.01" placeholder="Preco" />
-        </div>
-        <button onclick="adicionarProduto()">Adicionar</button>
-    </div>
 
-    <div id="Remover" class="tabcontent">
-        <h3>Remover produto</h3>
-        <div class="input-field">
-            <input id="removerCodigo" type="number" placeholder="Codigo" />
+        <div id="Adicionar" class="tabcontent">
+            <h3>Adicionar produto</h3>
+            <div class="input-field">
+                <input id="nome" type="text" placeholder="Nome" />
+            </div>
+            <div class="input-field">
+                <input id="codigo" type="number" placeholder="Codigo" />
+            </div>
+            <div class="input-field">
+                <input id="preco" type="number" step="0.01" placeholder="Preco" />
+            </div>
+            <button onclick="adicionarProduto()">Adicionar</button>
         </div>
-        <button onclick="removerProduto()">Remover</button>
-    </div>
 
-    <div id="Listar" class="tabcontent">
-        <h3>Lista de produtos</h3>
-        <div id="produtos"></div>
-    </div>
-
-    <div id="Vender" class="tabcontent">
-        <h3>Iniciar venda</h3>
-        <div class="input-field">
-            <input id="vendaCodigo" type="number" placeholder="Codigo do produto" />
+        <div id="Remover" class="tabcontent">
+            <h3>Remover produto</h3>
+            <div class="input-field">
+                <input id="removerCodigo" type="number" placeholder="Codigo" />
+            </div>
+            <button onclick="removerProduto()">Remover</button>
         </div>
-        <div class="input-field">
-            <input id="quantidade" type="number" placeholder="Quantidade" />
+
+        <div id="Listar" class="tabcontent">
+            <h3>Lista de produtos</h3>
+            <div id="produtos"></div>
         </div>
-        <button onclick="iniciarVenda()">Adicionar ao carrinho</button>
-        <button onclick="finalizarVenda()">Finalizar venda</button>
-        <h4>Itens no carrinho</h4>
-        <div id="carrinho"></div>
-    </div>
 
-    <script src="scripts.js"></script>
-</body>
+        <div id="Vender" class="tabcontent">
+            <h3>Iniciar venda</h3>
+            <div class="input-field">
+                <input id="vendaCodigo" type="number" placeholder="Codigo do produto" />
+            </div>
+            <div class="input-field">
+                <input id="quantidade" type="number" placeholder="Quantidade" />
+            </div>
+            <button onclick="iniciarVenda()">Adicionar ao carrinho</button>
+            <button onclick="finalizarVenda()">Finalizar venda</button>
+            <h4>Itens no carrinho:</h4>
+            <ul id="carrinho"></ul>
+            <h4>Total da Venda:</h4>
+            <div id="totalVenda">$0.00</div>
+        </div>
 
+        <script src="script.js"></script>
+    </body>
 </html>
