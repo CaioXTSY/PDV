@@ -1,6 +1,5 @@
 import webview
 from threading import Thread
-import json
 
 class Produto:
     def __init__(self, nome, codigo, preco):
@@ -17,7 +16,7 @@ class PDV:
         if float(preco) <= 0:
             return False
         else:
-            self.produtos[codigo] = Produto(nome, codigo, preco)
+            self.produtos[codigo] = Produto(nome, codigo, float(preco))
             return True
 
     def remover_produto(self, codigo):
@@ -48,7 +47,17 @@ pdv = PDV()
 def load_html(window):
     with open('index.html', 'r') as f:
         html = f.read()
-        window.load_html(html)
+
+    with open('styles.css', 'r') as f:
+        styles = f.read()
+
+    with open('scripts.js', 'r') as f:
+        scripts = f.read()
+
+    full_html = html.replace('</head>', '<style>{}</style></head>'.format(styles))
+    full_html = full_html.replace('</body>', '<script>{}</script></body>'.format(scripts))
+    
+    window.load_html(full_html)
 
 window = webview.create_window('PDV', js_api=pdv)
 thread = Thread(target=load_html, args=(window,))

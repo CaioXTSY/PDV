@@ -1,0 +1,79 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #E0E0E2;
+  align-items: center;
+  align-content: center;
+}
+
+#tabs {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  padding: 12%;
+}
+
+#tabs button {
+  background-color: inherit;
+  float: left;
+  border-bottom: #000000;
+  align-items: center;
+  align-content: center;
+  border-style: solid;
+  outline-width: 40cm;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  transition: background-color 0.3s ease;
+  background-color: #81D2C7;
+  align-items: baseline;
+  padding: 4%;
+}
+
+#tabs button:hover {
+  background-color: #d4fffa;
+  transition: background-color 0.4s ease;
+}
+
+#tabs button.active {
+  background-color: #ccc;
+  transition: background-color 0.2s ease;
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #000000;
+  border-top: none;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  0% {
+      transform: translateY(-20px);
+      opacity: 0;
+  }
+  100% {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+.input-field {
+  margin-bottom: 10px;
+}
+
+#Vender button:active {
+  animation: pulse 0.2s ease;
+}
+
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.05);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
