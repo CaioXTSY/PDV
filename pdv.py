@@ -70,8 +70,6 @@ class PDV:
     def get_venda_atual(self):
         return [{"nome": item[0].nome, "quantidade": item[1], "preco": item[0].preco} for item in self.venda_atual]
 
-pdv = PDV()
-
 def load_html_with_assets(window):
     with open('index.html', 'r') as f:
         html_content = f.read()
@@ -95,4 +93,3 @@ thread.start()
 webview.start(debug=True)
 
 window = webview.create_window('PDV', js_api=pdv)
-webview.start(debug=True)
