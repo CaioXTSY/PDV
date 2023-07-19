@@ -30,7 +30,11 @@ class PDV:
         return [{"nome": produto.nome, "codigo": produto.codigo, "preco": produto.preco} for produto in self.produtos.values()]
 
     def iniciar_venda(self, codigo, quantidade):
-        quantidade = int(quantidade)
+        try:
+            quantidade = int(quantidade)
+        except ValueError:
+            return False
+
         if codigo in self.produtos and quantidade > 0:
             self.venda_atual.append((self.produtos[codigo], quantidade))
             return True
